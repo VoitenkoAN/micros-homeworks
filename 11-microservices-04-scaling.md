@@ -19,6 +19,40 @@
 
 Обоснуйте свой выбор.
 
+
+|Критерий/Оркестратор|	Docker Swarm | Nomad	| Apache Mesos	| Fleet |	K8s |
+|--------------------|:-------------:|:------:|:-------------:|:-----:|:---:|
+|Типы рабочих нагрузок|:white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|:white_check_mark::white_check_mark:|:white_check_mark::white_check_mark:|
+|Легкость установки и исходной настройки (вручную)|:white_check_mark::white_check_mark::white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|:white_check_mark::white_check_mark:|	:white_check_mark::white_check_mark::white_check_mark:|:white_check_mark:|
+|Легкость администрирования кластеров	|:white_check_mark::white_check_mark:	|:white_check_mark::white_check_mark:|:white_check_mark::white_check_mark:|:white_check_mark::white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|
+|Требования к платформе для развертывания|:white_check_mark::white_check_mark::white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|:white_check_mark:|:white_check_mark::white_check_mark:|
+|Производительность	|:white_check_mark::white_check_mark::white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|:white_check_mark::white_check_mark:|
+|Ограничения на количество узлов и контейнеров в кластере|:white_check_mark::white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|:white_check_mark:|:white_check_mark::white_check_mark:|
+|Конфигурация как код	|:white_check_mark::white_check_mark:|:white_check_mark:|:white_check_mark::white_check_mark:|:white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|
+|Шаблоны	|:white_check_mark:|:white_check_mark:|:white_check_mark::white_check_mark:|:white_check_mark::white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|
+|Сети	|:white_check_mark::white_check_mark:|:white_check_mark::white_check_mark:|:white_check_mark::white_check_mark:|:white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|
+|Возможность обнаружения сервисов|:white_check_mark::white_check_mark::white_check_mark:|:white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|:white_check_mark::white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|
+|Автомасштабирование|:white_check_mark:|:white_check_mark::white_check_mark:|:white_check_mark::white_check_mark:|:white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|
+|Выполнение обновлений и отката	|:white_check_mark::white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:	|:white_check_mark::white_check_mark::white_check_mark:|:white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|
+|Отказоустойчивость|:white_check_mark::white_check_mark::white_check_mark:|	:white_check_mark::white_check_mark::white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|
+|Мониторинг	|:white_check_mark::white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|:white_check_mark::white_check_mark:|:white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|
+|Безопасность	|:white_check_mark::white_check_mark:|:white_check_mark::white_check_mark:|:white_check_mark::white_check_mark:|:white_check_mark:|:white_check_mark::white_check_mark::white_check_mark:|
+
+- Kubernetes поддерживает разные системы контейнеризации.
+- Kubernetes DNS. Каждому сервису, созданному с помощью объекта service присваивается доменное имя совпадающее с именем самого сервиса. Маршрутизация происходит через kube-proxy и virtual ip.
+В Kubernetes поддерживается автомасштабирование на основе наблюдаемого использования ЦП, памяти и ряда других пользовательских метрик. При этом масштабирование доступно на нескольких уровнях:
+  - Автомасштабирование кластера с использованием Cluster Autoscaler, отвечающее за изменение числа узлов в кластере.
+  - Горизонтальное автомасштабирование подов (Horizontal Pod Autoscaler, HPA), которое автоматически изменяет количество подов в зависимости от значений выбранных показателей.
+  - Вертикальное автомасштабирование подов (Vertical Pod Autoscaler, VPA), которое автоматически изменяет объем ресурсов, выделяемых существующим подам.
+- Namespaces - это способ разделить кластер на индивидуальные зоны. NetworkPolicy и GlobalNetworkPolicy дает разграничение доступа внутри кластера, контроль исходящего и входящего трафика. ingress-controller - обеспечивает маршрутизацию трафика.
+- В Kubernetes есть объект - secret для хранения чувствительных данных. Также есть vault для множества функционала по хранению секретов. Env для установки переменных сред в контейнеры.
+
+Самодостаточный инструмент оркестровки, в который встроено множество сервисов. Kubernetes предоставляет все функции, необходимые для запуска приложений на основе контейнеров, включая: управление кластером, планирование, обнаружение служб, мониторинг, управление безопасностью и многое другое.
+Поддерживается фондом CNCF (Cloud Native Computing Foundation). У Kubernetes самое впечатляющее по числу участников сообщество среди всех оркестраторов, что обеспечивает богатый инструментарий и большое число готовых решений.
+Это бесплатный инструмент с открытым исходным кодом, который работает в любой ОС.
+
+[Источник](https://habr.com/ru/companies/vk/articles/543232/)
+
 ## Задача 2: Распределённый кеш * (необязательная)
 
 Разработчикам вашей компании понадобился распределённый кеш для организации хранения временной информации по сессиям пользователей.
